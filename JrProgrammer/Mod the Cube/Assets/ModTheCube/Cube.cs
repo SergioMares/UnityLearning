@@ -1,14 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Cube : MonoBehaviour
 {
     public MeshRenderer Renderer;
 
     Vector3 CubePosition = new Vector3(0, 0, 0);
-    [SerializeField]
+    
     Vector3 CubeScale = Vector3.one * 1.3f;
+
+    public Slider sliderX, sliderY, sliderZ;
      
     public float angVelX = 0,
                  angVelY = 0,
@@ -40,6 +43,10 @@ public class Cube : MonoBehaviour
     
     void Update()
     {
+        CubeScale.x = sliderX.value;
+        CubeScale.y = sliderY.value;
+        CubeScale.z = sliderZ.value;
+
         transform.localScale = CubeScale;
         transform.Rotate(angVelX * Time.deltaTime, 
                          angVelY * Time.deltaTime, 
