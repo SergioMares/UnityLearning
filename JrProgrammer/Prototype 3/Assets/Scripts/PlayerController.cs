@@ -17,9 +17,14 @@ public class PlayerController : MonoBehaviour
     private AudioSource playerAudio;
 
     public float jumpForce = 10, 
-                 gravityMod = 1 ;
+                 gravityMod = 1,
+                 score = 0;
     public bool isOnGround = true,
-                gameOver = false;
+                gameOver = true,
+                speedUp = false,
+                inPlace = false;
+    private int jumps = 0,
+                scoreMod = 1;
 
     // Start is called before the first frame update
     void Start()
@@ -33,14 +38,43 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && isOnGround && !gameOver)
+        if (transform.position.x < 0 && !inPlace)
         {
+            transform.Translate(Vector3.forward * Time.deltaTime * 2);
+        }
+        else if(!inPlace)
+        {
+            inPlace = true;
+            gameOver = false;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space) && (isOnGround || jumps < 2) && !gameOver) 
+        {
+            playerRb.velocity = Vector3.zero;
             playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             playerAnim.SetTrigger("Jump_trig");
             dirtParticle.Stop();
             playerAudio.PlayOneShot(jumpSound);
+            jumps++;
             isOnGround = false;
         }
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            speedUp = true;
+            scoreMod = 4;
+            playerAnim.speed *= 2;
+        }
+        else if (Input.GetKeyUp(KeyCode.S))
+        {
+            speedUp = false;
+            scoreMod = 1;
+            playerAnim.speed /= 2;
+        }
+        if (!gameOver)
+        {
+            score += Time.deltaTime * scoreMod;
+            Debug.Log("Score: " + score);
+        }        
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -48,6 +82,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isOnGround = true;
+            jumps = 0;
             dirtParticle.Play();
         }
 
