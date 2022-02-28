@@ -15,28 +15,48 @@ public class GameManager : MonoBehaviour
                             PausePlayButton;
     public Slider           soundSlider;
     public GameObject titleScreen,
-                      pauseScreen;
-    public bool isGameActive;
+                      pauseScreen,
+                      particlesMouse;
+    public bool isGameActive,
+                mouseState = false;
 
     private float spawnRate = 1.0f;
     private int score,
                 lives = 3;
     private AudioSource gameMusic;
     private bool isPaused = false;
+    private ParticleSystem particlesSysMouse;
 
 
 
     // Start is called before the first frame update
     void Start()
     {
-        gameMusic = GetComponent<AudioSource>();        
+        gameMusic = GetComponent<AudioSource>();
+        particlesSysMouse = particlesMouse.GetComponent<ParticleSystem>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        //Camera.ScreenToWorldPoint
+        //point = cam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, cam.nearClipPlane));
+        //Debug.Log(Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.nearClipPlane)));
+        particlesMouse.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.nearClipPlane));
 
-    }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            mouseState = true;
+        }
+        if(Input.GetMouseButtonUp(0))
+        {
+            mouseState = false;
+        }
+
+        var emission = particlesSysMouse.emission;
+        emission.enabled = mouseState;                        
+    }    
 
     IEnumerator SpawnTarget()
     {

@@ -38,16 +38,16 @@ public class Target : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private void OnMouseDown()
+    private void OnMouseOver()
     {
-        if (gameManager.isGameActive)
+        if (gameManager.isGameActive && gameManager.mouseState)
         {
             gameManager.UpdateScore(value);
             Instantiate(explosionParticle, transform.position, transform.rotation);
             Destroy(gameObject);
-        }
-        
+        }        
     }
+
 
     // Update is called once per frame
     void Update()
