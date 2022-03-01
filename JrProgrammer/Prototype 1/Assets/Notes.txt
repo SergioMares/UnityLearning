@@ -1,4 +1,0 @@
-tricky wall will have a random boolean, that, if it's true, will spawn a explosive barrel, slowing the player down.
-
---to do--
-add some particles and eye candy effects
