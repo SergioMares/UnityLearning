@@ -52,7 +52,7 @@ public abstract class Unit : MonoBehaviour,
                 BuildingInRange();
             }
         }
-    }
+    }    
 
     public virtual void GoTo(Building target)
     {

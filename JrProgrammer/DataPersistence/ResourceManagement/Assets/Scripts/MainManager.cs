@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class MainManager : MonoBehaviour
 {
-    public static MainManager Instance;
+    public static MainManager Instance { get; private set; }
 
     public Color TeamColor;
 
@@ -22,6 +22,8 @@ public class MainManager : MonoBehaviour
         LoadColor();
         Debug.Log(Application.persistentDataPath);
     }
+
+
 
     [System.Serializable]
     class SaveData
@@ -49,4 +51,6 @@ public class MainManager : MonoBehaviour
             TeamColor = data.TeamColor;
         }
     }
+
+
 }
